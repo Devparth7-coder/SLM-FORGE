@@ -1,0 +1,55 @@
+# Render Blueprint — one-click deploy of SLM-Forge
+# Push this file to your GitHub repo and choose "Blueprint" when creating a new service on Render.
+# Or deploy manually via the Web Service form using the values in README deployment section.
+
+services:
+  - type: web
+    name: slmforge-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: starter
+    region: oregon
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: FORCE_CPU
+        value: "true"
+      - key: WANDB_ENABLED
+        value: "false"
+      - key: STORAGE_BACKEND
+        value: local
+      - key: STORAGE_LOCAL_ROOT
+        value: /app/data/artifacts
+      - key: MODEL_CACHE_DIR
+        value: /app/data/cache/models
+      - key: DATA_ROOT
+        value: /app/data
+      - key: DATASETS_DIR
+        value: /app/data/datasets
+      - key: ARTIFACTS_DIR
+        value: /app/data/artifacts
+      - key: REPORTS_DIR
+        value: /app/data/reports
+      - key: LOG_LEVEL
+        value: INFO
+      - key: LOG_FORMAT
+        value: json
+      - key: PYTHONPATH
+        value: /app
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: slmforge-db
+          property: connectionString
+
+databases:
+  - name: slmforge-db
+    plan: starter
+    region: oregon
+    databaseName: slmforge
+    user: slmforge
