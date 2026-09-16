@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import sys
 from logging.config import fileConfig
 from pathlib import Path
@@ -10,16 +9,16 @@ from pathlib import Path
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-# Add backend to path
+# Ensure the backend source is on sys.path regardless of CWD
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from slmforge.core.config import settings
-from slmforge.db.base import Base
-from slmforge.db.models import (  # noqa: F401  (ensure models are imported)
-    dataset, model, experiment, result, artifact, audit,
-)
+from slmforge.core.config import settings  # noqa: E402
+from slmforge.db.base import Base  # noqa: E402
+from slmforge.db import models  # noqa: E402,F401  (register models)
 
 config = context.config
+
+# Database URL comes from environment / settings, not alembic.ini
 config.set_main_option("sqlalchemy.url", settings.database_url_sync)
 
 if config.config_file_name is not None:
