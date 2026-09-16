@@ -1,0 +1,82 @@
+# SLM-Forge Example Configuration
+# ────────────────────────────────
+# Use this as a template for reproducible experiment configuration.
+
+project:
+  name: slm-forge
+  version: "0.1.0"
+
+model:
+  name: Qwen/Qwen2.5-0.5B-Instruct
+  revision: main
+  quantization: 4bit  # 4bit, 8bit, or null for full precision
+
+dataset:
+  name: vulnerability-detection-demo
+  version: v1.0.0
+  path: demo_data/vulnerability_demo.json
+  domain: code_security
+  task: vulnerability_classification
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  deduplicate: true
+  seed: 42
+
+training:
+  method: qlora   # lora | qlora | full
+  seed: 42
+  learning_rate: 2.0e-4
+  epochs: 3.0
+  batch_size: 2
+  gradient_accumulation_steps: 8
+  warmup_ratio: 0.03
+  max_seq_length: 1024
+  weight_decay: 0.01
+  scheduler: cosine
+  mixed_precision: bf16
+  gradient_checkpointing: true
+  max_grad_norm: 1.0
+  optim: paged_adamw_8bit
+  lora:
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    target_modules:
+      - q_proj
+      - v_proj
+    bias: none
+    task_type: CAUSAL_LM
+  bnb:
+    load_in_4bit: true
+    bnb_4bit_quant_type: nf4
+    bnb_4bit_compute_dtype: bfloat16
+    bnb_4bit_use_double_quant: true
+
+evaluation:
+  batch_size: 4
+  max_new_tokens: 256
+  temperature: 0.0
+  split: test
+  compute_confusion_matrix: true
+  latency_measurement: true
+  robustness_tests:
+    - whitespace
+    - formatting
+    - comment_insertion
+    - variable_renaming
+    - truncation
+    - long_context
+
+tracking:
+  wandb:
+    enabled: false
+    project: slm-forge
+    entity: null
+
+hardware:
+  force_cpu: false
+
+logging:
+  level: INFO
+  format: json

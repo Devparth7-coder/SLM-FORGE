@@ -1,0 +1,35 @@
+{
+  "name": "slm-forge-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "test": "echo 'Playwright tests not configured in this version'"
+  },
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "recharts": "2.12.0",
+    "clsx": "2.1.0",
+    "lucide-react": "0.330.0",
+    "date-fns": "3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.0",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0",
+    "autoprefixer": "10.4.17",
+    "postcss": "8.4.33",
+    "tailwindcss": "3.4.1",
+    "@typescript-eslint/eslint-plugin": "6.19.0",
+    "eslint": "8.56.0",
+    "eslint-config-next": "14.1.0",
+    "typescript": "5.3.3",
+    "prettier": "3.2.4"
+  }
+}

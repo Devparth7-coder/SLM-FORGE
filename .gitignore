@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+.next/
+out/
+.npm
+.yarn-integrity
+
+# Data (not committed — too large)
+data/artifacts/*
+data/cache/*
+data/datasets/*
+data/reports/*
+data/raw/*
+data/processed/*
+!data/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# W&B
+wandb/
+
+# Jupyter
+.ipynb_checkpoints/

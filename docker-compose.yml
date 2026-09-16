@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: slmforge-postgres
+    environment:
+      POSTGRES_USER: slmforge
+      POSTGRES_PASSWORD: slmforge
+      POSTGRES_DB: slmforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U slmforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: slmforge-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: slmforge-backend
+    command: uvicorn slmforge.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+      - ./configs:/app/configs
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://slmforge:slmforge@postgres:5432/slmforge
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_LOCAL_ROOT=/app/data/artifacts
+      - MODEL_CACHE_DIR=/app/data/cache/models
+      - SECRET_KEY=dev-secret-change-me
+      - DEBUG=true
+      - HOST=0.0.0.0
+      - PORT=8000
+      - ALLOWED_ORIGINS=*
+      - WANDB_ENABLED=false
+      - FORCE_CPU=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: slmforge-frontend
+    command: npm run dev -- --hostname 0.0.0.0 --port 3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

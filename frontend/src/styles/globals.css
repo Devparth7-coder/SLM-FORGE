@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background-color: #0a0a0b;
+  color: #e4e4e7;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+::-webkit-scrollbar-thumb {
+  background: #26262c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+@layer components {
+  .card {
+    @apply bg-bg-surface border border-border rounded-lg;
+  }
+  .card-header {
+    @apply px-4 py-3 border-b border-border-subtle flex items-center justify-between;
+  }
+  .card-body {
+    @apply p-4;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium
+           transition-colors border border-border bg-bg-muted hover:bg-border-subtle
+           focus:outline-none focus:ring-2 focus:ring-accent/30 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-accent hover:bg-accent/90 border-accent text-white;
+  }
+  .btn-danger {
+    @apply bg-accent-danger hover:bg-accent-danger/90 border-accent-danger text-white;
+  }
+  .btn-success {
+    @apply bg-accent-success hover:bg-accent-success/90 border-accent-success text-white;
+  }
+  .btn-sm {
+    @apply px-2 py-1 text-xs;
+  }
+  .input {
+    @apply w-full px-3 py-1.5 bg-bg-muted border border-border rounded-md text-sm text-fg
+           placeholder-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent;
+  }
+  .select {
+    @apply input appearance-none cursor-pointer;
+  }
+  .label {
+    @apply block text-xs font-medium text-fg-muted mb-1 uppercase tracking-wider;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full
+           border;
+  }
+  .badge-green {
+    @apply bg-accent-success/10 border-accent-success/30 text-accent-success;
+  }
+  .badge-red {
+    @apply bg-accent-danger/10 border-accent-danger/30 text-accent-danger;
+  }
+  .badge-yellow {
+    @apply bg-accent-warning/10 border-accent-warning/30 text-accent-warning;
+  }
+  .badge-blue {
+    @apply bg-accent/10 border-accent/30 text-accent;
+  }
+  .badge-gray {
+    @apply bg-bg-muted border-border text-fg-muted;
+  }
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2 text-sm rounded-md text-fg-muted hover:text-fg
+           hover:bg-bg-muted transition-colors;
+  }
+  .nav-item-active {
+    @apply bg-bg-muted text-fg;
+  }
+  .table-base {
+    @apply w-full text-sm;
+  }
+  .table-base thead th {
+    @apply text-left text-xs font-medium text-fg-subtle uppercase tracking-wider px-3 py-2 border-b border-border;
+  }
+  .table-base tbody td {
+    @apply px-3 py-2 border-b border-border-subtle;
+  }
+  .table-base tbody tr:hover {
+    @apply bg-bg-muted/50;
+  }
+  .metric-value {
+    @apply text-2xl font-semibold font-mono;
+  }
+  .metric-label {
+    @apply text-xs text-fg-subtle uppercase tracking-wider;
+  }
+  .section-title {
+    @apply text-lg font-semibold text-fg;
+  }
+}
